@@ -1,4 +1,5 @@
-#define LED_PIN 8
+#define LED_PIN_ALARM 8
+#define LED_PIN_STATUS 6
 #define IR_SENSOR_PIN 13
 #define BUTTON_PIN 7
 #define BUZZER_PIN 9
@@ -8,24 +9,32 @@ byte Bewegung = LOW;
 byte alarm = LOW;
 
 void setup() {
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(LED_PIN_ALARM, OUTPUT);
+  pinMode(LED_PIN_STATUS, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT);
   pinMode(IR_SENSOR_PIN, INPUT);
 }
 
 void loop() {
+
+
+
   byte buttonState = digitalRead(BUTTON_PIN);
 
   if (buttonState != lastButtonState) {
     lastButtonState = buttonState;
     if (buttonState == LOW) {
       alarm = (alarm == HIGH) ? LOW : HIGH;
-    //   // digitalWrite(LED_PIN, sosState);
+    //   // digitalWrite(LED_PIN_ALARM, sosState);
     }
   }
 
-
+  if (alarm == HIGH) {
+    digitalWrite(LED_PIN_STATUS, HIGH);
+  } else if (alarm == LOW) {
+    digitalWrite(LED_PIN_STATUS, LOW);
+  }
 
   Bewegung = digitalRead(IR_SENSOR_PIN);
 
@@ -35,7 +44,7 @@ void loop() {
 }
 
 void triggerSirene() {
-    digitalWrite(LED_PIN, HIGH);
+    digitalWrite(LED_PIN_ALARM, HIGH);
       tone(BUZZER_PIN, 392);
     delay(800);
       tone(BUZZER_PIN, 660);
@@ -47,6 +56,6 @@ void triggerSirene() {
       tone(BUZZER_PIN, 392);
     delay(800);
       noTone(BUZZER_PIN);
-    delay(4500);
-    digitalWrite(LED_PIN, LOW);
+    delay(1500);
+    digitalWrite(LED_PIN_ALARM, LOW);
 }
