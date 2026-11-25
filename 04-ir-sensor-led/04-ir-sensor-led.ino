@@ -1,8 +1,8 @@
 #include <Servo.h>
-#define SERVO_PIN 11
+#define SERVO_PIN 9
 #define LED_PIN_ALARM 8
 #define LED_PIN_STATUS 6
-#define IR_SENSOR_PIN 13
+#define IR_SENSOR_PIN 3
 #define BUTTON_PIN 7
 #define BUZZER_PIN 4
 
@@ -12,6 +12,7 @@ byte Bewegung = LOW;
 byte alarm = LOW;
 
 void setup() {
+  Serial.begin(9600);
   myServo.attach(SERVO_PIN);
   pinMode(LED_PIN_ALARM, OUTPUT);
   pinMode(LED_PIN_STATUS, OUTPUT);
@@ -25,6 +26,8 @@ void loop() {
 
 
   byte buttonState = digitalRead(BUTTON_PIN);
+
+  Serial.println(Bewegung);
 
   if (buttonState != lastButtonState) {
     lastButtonState = buttonState;
@@ -45,7 +48,7 @@ void loop() {
 
   if (Bewegung == HIGH && alarm == HIGH) {
     moveServo();
-    triggerSirene();
+    // triggerSirene();
   }
 }
 
